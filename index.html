@@ -1,42 +1,73 @@
 <!DOCTYPE html><html>
 <head>
 <meta charset="UTF-8">
-<title>Happiness Machine</title><style>
-body{
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>For Abhi ✨</title><style>
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#ff7eb3,#ff758c);
+}
+
+body{
+background:#0b0b14;
 color:white;
+overflow:hidden;
+}
+
+.screen{
+display:none;
+height:100vh;
+width:100%;
+padding:30px;
+justify-content:center;
+align-items:center;
+flex-direction:column;
 text-align:center;
-overflow-x:hidden;
 }
 
-.container{
-padding:40px 20px;
+.active{
+display:flex;
 }
 
-button{
+h1{
+margin-bottom:20px;
+}
+
+p{
+max-width:600px;
+line-height:1.6;
+margin:10px;
+}
+
+.btn{
 padding:14px 28px;
 border:none;
 border-radius:30px;
+background:#ff4da6;
+color:white;
 font-size:18px;
 cursor:pointer;
-margin:10px;
-background:white;
-color:#ff4d88;
-font-weight:bold;
+margin-top:20px;
+box-shadow:0 0 20px #ff4da6;
 }
 
-.card{
-background:rgba(255,255,255,0.15);
-margin:20px auto;
-padding:20px;
+.gift{
+font-size:100px;
+cursor:pointer;
+animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+50%{transform:translateY(-15px);}
+}
+
+.photo{
+width:85%;
+max-width:350px;
 border-radius:20px;
-max-width:600px;
-}
-
-.hidden{
-display:none;
+margin-top:20px;
+box-shadow:0 0 30px #ff4da6;
 }
 
 .heart{
@@ -47,114 +78,100 @@ animation:float 6s linear infinite;
 }
 
 @keyframes float{
-from{transform:translateY(0);}
-to{transform:translateY(-110vh);}
+from{
+transform:translateY(0);
+opacity:1;
 }
-</style></head><body><div class="container"><h1>⚠️ Warning!</h1><div class="card">
-<p>This website may cause excessive smiling.</p>
-<p>Proceed at your own risk.</p>
-<button onclick="startMission()">Start Mission 🚀</button>
-</div><div id="mission" class="hidden card">
-<h2>🔍 Happiness Scanner</h2>
-<p id="scanText">Starting scan...</p>
-<button onclick="showFile()">Continue ➡️</button>
-</div><div id="file" class="hidden card">
-<h2>📁 Confidential File</h2>
-<p><b>Name:</b> Abhi</p>
-<p><b>Danger Level:</b> Maximum ⚠️</p>
-<p>Reason: Makes people smile without trying.</p>
-<p>Status: Officially Awesome 😎</p>
-<button onclick="showCompliments()">Unlock Compliments 💖</button>
-</div><div id="compliments" class="hidden card">
-<h2>🎲 Compliment Machine</h2>
-<p id="complimentText">Press the button!</p>
-<button onclick="compliment()">Generate Compliment ✨</button>
-</div><div class="card">
-<h2>🤫 Secret Button</h2>
-<button onclick="secret()">Free Money 💰</button>
-<p id="secretText"></p>
-</div><div id="final" class="card">
-<h2>🎁 Final Surprise</h2>
-<p>
-This website wasn't made because of a special day.
-</p>
-<p>
-It was made because you deserve a reason to smile.
-</p>
-<p>
-You're awesome... and you're appreciated. ❤️😎
-</p>
-<p>
-— Devu ❤️
-</p>
-</div></div><script>
-
-function startMission(){
-document.getElementById("mission").classList.remove("hidden");
-
-let messages=[
-"Detecting kindness... ✅",
-"Detecting humour... ✅",
-"Detecting positive vibes... ✅",
-"Detecting awesomeness... ✅"
-];
-
-let i=0;
-
-let interval=setInterval(function(){
-document.getElementById("scanText").innerHTML=messages[i];
-i++;
-
-if(i>=messages.length){
-clearInterval(interval);
+to{
+transform:translateY(-110vh);
+opacity:0;
 }
-},1000);
 }
+</style></head><body><div class="screen active" id="s1">
+<h1>Hey Abhi... ✨</h1>
+<p>I found something interesting.</p>
+<button class="btn" onclick="next(2)">Continue</button>
+</div><div class="screen" id="s2">
+<h1>🎁</h1>
+<p>Tap the gift.</p>
+<div class="gift" onclick="next(3)">🎁</div>
+</div><div class="screen" id="s3">
+<h1>🤖 AI Analysis</h1>
+<p>Humour: 97% 😎</p>
+<p>Kindness: 100% ❤️</p>
+<p>Patience: 92% ✨</p>
+<p>Ability to make Devu smile:</p>
+<p><b>ERROR ⚠️ VALUE TOO HIGH</b></p>
+<button class="btn" onclick="next(4)">Continue</button>
+</div><div class="screen" id="s4">
+<h1>Question Time 😏</h1>
+<p>Are you awesome?</p>
+<button class="btn" onclick="next(5)">YES</button>
+<button class="btn" onclick="next(5)">ABSOLUTELY YES</button>
+</div><div class="screen" id="s5">
+<h1>📁 TOP SECRET</h1>
+<p>Subject: Abhi</p>
+<p>Status: Rare Human Specimen</p>
+<p>Reason: Makes people smile without realizing it.</p>
+<button class="btn" onclick="next(6)">Open Evidence</button>
+</div><div class="screen" id="s6">
+<h1>📸 Memory #1</h1>
+<img src="quality_restoration_20251015203451640.jpg" class="photo">
+<p>One of my favorite memories ❤️</p>
+<button class="btn" onclick="next(7)">Next</button>
+</div><div class="screen" id="s7">
+<h1>📸 Memory #2</h1>
+<img src="Snapchat-1248810170.jpg" class="photo">
+<p>A moment worth keeping ✨</p>
+<button class="btn" onclick="next(8)">Continue</button>
+</div><div class="screen" id="s8">
+<h1>💌 Final Message</h1><p>
+Congratulations.
+</p><p>
+After extensive research,
+you've officially been classified as:
+</p><h2>✨ A genuinely wonderful human ✨</h2><p>
+This website wasn't made because of an anniversary.
+</p><p>
+It wasn't made because of a special day.
+</p><p>
+It was made because sometimes people deserve a reminder.
+</p><p>
+You're appreciated.
+</p><p>
+You matter.
+</p><p>
+And you've made someone's life a little brighter.
+</p><h2>❤️ Devu ❤️</h2><a href="https://www.youtube.com/results?search_query=until+i+found+you" target="_blank">
+<button class="btn">🎵 Our Song</button>
+</a></div><script>
 
-function showFile(){
-document.getElementById("file").classList.remove("hidden");
-}
+function next(num){
 
-function showCompliments(){
-document.getElementById("compliments").classList.remove("hidden");
-}
+document.querySelectorAll('.screen').forEach(s=>{
+s.classList.remove('active');
+});
 
-function compliment(){
+document.getElementById('s'+num).classList.add('active');
 
-let list=[
-"You're someone's favorite notification ❤️",
-"You make ordinary days better ✨",
-"You're cooler than you think 😎",
-"Your smile deserves an award 🏆",
-"You're stronger than you realize 💪",
-"Certified Good Human™ ✅"
-];
-
-let random=list[Math.floor(Math.random()*list.length)];
-
-document.getElementById("complimentText").innerHTML=random;
 }
 
-function secret(){
-document.getElementById("secretText").innerHTML=
-"😂 No free money here! Just a reminder that you're appreciated ❤️";
-}
+setInterval(()=>{
 
-setInterval(function(){
+let h=document.createElement("div");
 
-let heart=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
 
-heart.className="heart";
-heart.innerHTML="❤️";
-heart.style.left=Math.random()*100+"vw";
+h.style.left=Math.random()*100+"vw";
 
-document.body.appendChild(heart);
+document.body.appendChild(h);
 
 setTimeout(()=>{
-heart.remove();
+h.remove();
 },6000);
 
-},300);
+},400);
 
 </script></body>
 </html>
