@@ -2,273 +2,126 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>The Story World</title>
+<title>Cinematic Intro</title>
 
 <style>
 body{
 margin:0;
-font-family:Poppins, sans-serif;
-background:black;
-color:white;
-overflow:hidden;
-}
-
-/* BACKGROUND */
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:0;
-}
-
-/* ALL SCREENS */
-.screen{
-display:none;
 height:100vh;
-width:100%;
+background:black;
+overflow:hidden;
+display:flex;
 justify-content:center;
 align-items:center;
-flex-direction:column;
-text-align:center;
+font-family:Poppins;
+}
+
+/* BACKGROUND DARK GLOW */
+.bg{
 position:absolute;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center, #1a0000, #000);
+opacity:0;
+animation:bgFade 3s forwards;
+}
+
+@keyframes bgFade{
+to{opacity:1;}
+}
+
+/* MAIN LOGO TEXT */
+.logo{
+font-size:4rem;
+font-weight:bold;
+color:#ff2a2a;
+letter-spacing:3px;
+opacity:0;
+transform:scale(0.6);
+animation:intro 3s ease forwards;
+text-shadow:0 0 30px #ff0000;
 z-index:2;
 }
 
-.active{
-display:flex;
+@keyframes intro{
+0%{opacity:0; transform:scale(0.6);}
+40%{opacity:1; transform:scale(1.1);}
+70%{transform:scale(1);}
+100%{opacity:1;}
 }
 
-/* BUTTONS */
-button{
-margin:10px;
-padding:12px 20px;
+/* SUB TEXT */
+.sub{
+position:absolute;
+bottom:80px;
+color:white;
+opacity:0;
+font-size:1rem;
+letter-spacing:2px;
+animation:fadeIn 2s 2s forwards;
+}
+
+@keyframes fadeIn{
+to{opacity:0.7;}
+}
+
+/* SKIP BUTTON */
+.skip{
+position:absolute;
+top:20px;
+right:20px;
+padding:8px 15px;
 border:1px solid white;
 background:transparent;
 color:white;
 cursor:pointer;
-transition:0.3s;
+opacity:0.7;
 }
 
-button:hover{
+.skip:hover{
 background:white;
 color:black;
 }
 
-/* TITLE EFFECT */
-h1{
-text-shadow:0 0 20px #ff3c6f;
+/* FADE OUT TRANSITION */
+.fadeOut{
+animation:out 1.5s forwards;
 }
 
-/* INTRO ANIMATION */
-.intro{
-font-size:2.5rem;
-animation:fadeIn 3s forwards;
-opacity:0;
-}
-
-@keyframes fadeIn{
-to{opacity:1}
-}
-
-/* BOX */
-.box{
-max-width:600px;
-background:rgba(255,255,255,0.05);
-padding:25px;
-border-radius:15px;
-backdrop-filter:blur(10px);
+@keyframes out{
+to{opacity:0; transform:scale(1.2);}
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
+<div class="bg"></div>
 
-<!-- INTRO -->
-<div class="screen active" id="intro">
-  <div class="intro">🎬 A STORY IS ABOUT TO BEGIN...</div>
-  <button onclick="go('hub')">Skip</button>
-</div>
+<button class="skip" onclick="skipIntro()">Skip</button>
 
-<!-- HUB -->
-<div class="screen" id="hub">
-  <h1>🌌 Story World</h1>
-  <p id="memoryText"></p>
-  <button onclick="go('letter')">💌 Letter</button>
-  <button onclick="go('game')">🎮 Adventure</button>
-  <button onclick="go('secret')">🔒 Secret</button>
-</div>
+<div class="logo" id="logo">A STORY FOR YOU</div>
 
-<!-- LETTER -->
-<div class="screen" id="letter">
-  <div class="box">
-    <h2>💌 Letter</h2>
-    <p>
-      You came back again…  
-      that means something is still inside the memory.
-    </p>
-    <button onclick="go('hub')">Back</button>
-  </div>
-</div>
+<div class="sub">A cinematic emotional experience is starting...</div>
 
-<!-- GAME -->
-<div class="screen" id="game">
-  <div class="box" id="gameBox">
-    <h2>You wake inside a memory system...</h2>
-    <p>Choose your path.</p>
-
-    <button onclick="choice(1)">Open file</button>
-    <button onclick="choice(2)">Leave</button>
-  </div>
-</div>
-
-<!-- SECRET -->
-<div class="screen" id="secret">
-  <div class="box">
-    <h2>🔒 Secret Vault</h2>
-    <p id="secretMsg">Checking memory...</p>
-    <button onclick="go('hub')">Back</button>
-  </div>
-</div>
-
-<!-- END -->
-<div class="screen" id="end">
-  <h1>🎬 THE END</h1>
-  <p>But memories never end...</p>
-  <button onclick="go('hub')">Restart</button>
-</div>
+<!-- OPTIONAL MUSIC -->
+<audio id="sound" autoplay>
+  <source src="https://www.soundjay.com/misc/sounds/cinematic-boom-1.mp3">
+</audio>
 
 <script>
+setTimeout(() => {
+  document.body.classList.add("fadeOut");
 
-/* NAVIGATION */
-function go(id){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+  setTimeout(() => {
+    window.location.href = "letter.html";
+  }, 1200);
 
-if(id==='hub') updateMemory();
-if(id==='secret') loadSecret();
+}, 4500);
+
+function skipIntro(){
+  window.location.href = "letter.html";
 }
-
-/* MEMORY */
-function save(data){
-localStorage.setItem("story_state", data);
-}
-
-function updateMemory(){
-let m = localStorage.getItem("story_state");
-document.getElementById("memoryText").innerText =
-m ? "Memory: " + m : "No memory found.";
-}
-
-/* GAME */
-let level = 1;
-
-function choice(n){
-
-if(level===1){
-
-if(n===1){
-save("file_opened");
-level=2;
-
-document.getElementById("gameBox").innerHTML = `
-<h2>A voice appears...</h2>
-<button onclick="choice(1)">Follow voice</button>
-<button onclick="choice(2)">Ignore</button>
-`;
-}
-else{
-save("left");
-go('end');
-}
-}
-
-else if(level===2){
-
-if(n===1){
-save("followed");
-goodEnd();
-}
-else{
-badEnd();
-}
-
-}
-
-}
-
-function goodEnd(){
-document.getElementById("gameBox").innerHTML = `
-<h2>💖 TRUE ENDING</h2>
-<p>You were always part of this memory system.</p>
-<button onclick="go('end')">Continue</button>
-`;
-}
-
-function badEnd(){
-document.getElementById("gameBox").innerHTML = `
-<h2>💔 BAD END</h2>
-<p>The connection broke.</p>
-<button onclick="location.reload()">Retry</button>
-`;
-}
-
-/* SECRET */
-function loadSecret(){
-let m = localStorage.getItem("story_state");
-
-if(m==="followed"){
-document.getElementById("secretMsg").innerText =
-"You unlocked the hidden path 💖";
-}
-else if(m==="file_opened"){
-document.getElementById("secretMsg").innerText =
-"You saw something you shouldn’t...";
-}
-else{
-document.getElementById("secretMsg").innerText =
-"Nothing unlocked yet.";
-}
-}
-
-/* PARTICLES */
-const canvas=document.getElementById("bg");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<60;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2
-});
-}
-
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="white";
-
-particles.forEach(p=>{
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-ctx.fill();
-
-p.y -= 0.5;
-if(p.y<0) p.y=canvas.height;
-});
-
-requestAnimationFrame(draw);
-}
-draw();
-
-/* START MEMORY */
-updateMemory();
-
 </script>
 
 </body>
