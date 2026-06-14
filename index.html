@@ -1,177 +1,202 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>For Abhi ✨</title><style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happiness Machine 🤍</title>
 
+<style>
 body{
-background:#0b0b14;
+margin:0;
+font-family:Arial;
+background:black;
 color:white;
 overflow:hidden;
 }
 
+/* Screens */
 .screen{
 display:none;
 height:100vh;
 width:100%;
-padding:30px;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 text-align:center;
+padding:20px;
 }
 
 .active{
 display:flex;
 }
 
-h1{
-margin-bottom:20px;
-}
-
-p{
-max-width:600px;
-line-height:1.6;
-margin:10px;
-}
-
-.btn{
-padding:14px 28px;
+/* Button */
+button{
+padding:14px 25px;
 border:none;
-border-radius:30px;
+border-radius:25px;
 background:#ff4da6;
 color:white;
-font-size:18px;
-cursor:pointer;
+font-size:16px;
 margin-top:20px;
+cursor:pointer;
 box-shadow:0 0 20px #ff4da6;
 }
 
+/* Gift */
 .gift{
-font-size:100px;
+font-size:90px;
+animation:bounce 1.2s infinite;
 cursor:pointer;
-animation:bounce 1.5s infinite;
 }
 
 @keyframes bounce{
 50%{transform:translateY(-15px);}
 }
 
-.photo{
-width:85%;
-max-width:350px;
-border-radius:20px;
-margin-top:20px;
-box-shadow:0 0 30px #ff4da6;
+/* Photos */
+img{
+width:80%;
+max-width:320px;
+border-radius:15px;
+margin-top:15px;
+box-shadow:0 0 25px #ff4da6;
 }
 
+/* Hearts */
 .heart{
 position:fixed;
 bottom:-20px;
-font-size:25px;
+font-size:20px;
 animation:float 6s linear infinite;
 }
 
 @keyframes float{
-from{
-transform:translateY(0);
-opacity:1;
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-110vh);opacity:0;}
 }
-to{
-transform:translateY(-110vh);
-opacity:0;
+
+/* Glow text */
+.glow{
+text-shadow:0 0 10px #ff4da6;
 }
-}
-</style></head><body><div class="screen active" id="s1">
-<h1>Hey Abhi... ✨</h1>
-<p>I found something interesting.</p>
-<button class="btn" onclick="next(2)">Continue</button>
-</div><div class="screen" id="s2">
-<h1>🎁</h1>
-<p>Tap the gift.</p>
+
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div class="screen active" id="s1">
+<h1 class="glow">Hey Abhi...</h1>
+<p>Something interesting is waiting for you 🤍</p>
+<button onclick="next(2)">Start</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen" id="s2">
+<h1>🎁 Tap the Gift</h1>
 <div class="gift" onclick="next(3)">🎁</div>
-</div><div class="screen" id="s3">
-<h1>🤖 AI Analysis</h1>
-<p>Humour: 97% 😎</p>
-<p>Kindness: 100% ❤️</p>
-<p>Patience: 92% ✨</p>
-<p>Ability to make Devu smile:</p>
-<p><b>ERROR ⚠️ VALUE TOO HIGH</b></p>
-<button class="btn" onclick="next(4)">Continue</button>
-</div><div class="screen" id="s4">
-<h1>Question Time 😏</h1>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen" id="s3">
+<h1>🤖 AI SCAN</h1>
+<p>Humour: 97%</p>
+<p>Kindness: 100%</p>
+<p>Patience: 92%</p>
+<p><b>Smile Level: ERROR ⚠️ TOO HIGH</b></p>
+<button onclick="next(4)">Continue</button>
+</div>
+
+<!-- SCREEN 4 -->
+<div class="screen" id="s4">
+<h1>Question 😏</h1>
 <p>Are you awesome?</p>
-<button class="btn" onclick="next(5)">YES</button>
-<button class="btn" onclick="next(5)">ABSOLUTELY YES</button>
-</div><div class="screen" id="s5">
-<h1>📁 TOP SECRET</h1>
+<button onclick="next(5)">YES</button>
+<button onclick="next(5)">ABSOLUTELY YES</button>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen" id="s5">
+<h1>📁 SECRET FILE</h1>
 <p>Subject: Abhi</p>
-<p>Status: Rare Human Specimen</p>
-<p>Reason: Makes people smile without realizing it.</p>
-<button class="btn" onclick="next(6)">Open Evidence</button>
-</div><div class="screen" id="s6">
-<h1>📸 Memory #1</h1>
-<img src="quality_restoration_20251015203451640.jpg" class="photo">
-<p>One of my favorite memories ❤️</p>
-<button class="btn" onclick="next(7)">Next</button>
-</div><div class="screen" id="s7">
-<h1>📸 Memory #2</h1>
-<img src="Snapchat-1248810170.jpg" class="photo">
-<p>A moment worth keeping ✨</p>
-<button class="btn" onclick="next(8)">Continue</button>
-</div><div class="screen" id="s8">
-<h1>💌 Final Message</h1><p>
+<p>Status: Rare Human</p>
+<p>Makes people smile without trying</p>
+<button onclick="next(6)">Open Memory Vault</button>
+</div>
+
+<!-- SCREEN 6 PHOTO 1 -->
+<div class="screen" id="s6">
+<h1>📸 Memory 1</h1>
+<img src="quality_restoration_20251015203451640.jpg">
+<p>One of my favorite moments 🤍</p>
+<button onclick="next(7)">Next</button>
+</div>
+
+<!-- SCREEN 7 PHOTO 2 -->
+<div class="screen" id="s7">
+<h1>📸 Memory 2</h1>
+<img src="Snapchat-1248810170.jpg">
+<p>A memory worth keeping ✨</p>
+<button onclick="next(8)">Final Message</button>
+</div>
+
+<!-- SCREEN 8 FINAL -->
+<div class="screen" id="s8">
+<h1>💌 Final Message</h1>
+
+<p>
 Congratulations.
-</p><p>
-After extensive research,
-you've officially been classified as:
-</p><h2>✨ A genuinely wonderful human ✨</h2><p>
-This website wasn't made because of an anniversary.
-</p><p>
-It wasn't made because of a special day.
-</p><p>
-It was made because sometimes people deserve a reminder.
-</p><p>
+</p>
+
+<p>
+This wasn't made for a special day.
+</p>
+
+<p>
+It was made because you deserve a reminder.
+</p>
+
+<p>
 You're appreciated.
-</p><p>
-You matter.
-</p><p>
-And you've made someone's life a little brighter.
-</p><h2>❤️ Devu ❤️</h2><a href="https://www.youtube.com/results?search_query=until+i+found+you" target="_blank">
-<button class="btn">🎵 Our Song</button>
-</a></div><script>
+You're important.
+You're valued.
+</p>
 
-function next(num){
+<h2 class="glow">— Devu 🤍</h2>
 
-document.querySelectorAll('.screen').forEach(s=>{
-s.classList.remove('active');
+<a href="https://www.youtube.com/results?search_query=baby+now+that+ive+found+you" target="_blank">
+<button>🎵 Our Song</button>
+</a>
+
+<p style="margin-top:20px;opacity:0.8;">
+I'm really glad I met you 🤍
+</p>
+
+</div>
+
+<script>
+
+function next(n){
+document.querySelectorAll(".screen").forEach(s=>{
+s.classList.remove("active");
 });
-
-document.getElementById('s'+num).classList.add('active');
-
+document.getElementById("s"+n).classList.add("active");
 }
 
+/* floating hearts */
 setInterval(()=>{
-
 let h=document.createElement("div");
-
 h.className="heart";
 h.innerHTML="❤️";
-
 h.style.left=Math.random()*100+"vw";
-
 document.body.appendChild(h);
 
-setTimeout(()=>{
-h.remove();
-},6000);
+setTimeout(()=>h.remove(),6000);
+},300);
 
-},400);
+</script>
 
-</script></body>
+</body>
 </html>
