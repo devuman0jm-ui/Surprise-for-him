@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Feeling File</title>
+
+<style>
+body{
+margin:0;
+background:black;
+color:white;
+font-family:Poppins;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+.box{
+width:80%;
+max-width:600px;
+text-align:center;
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:15px;
+backdrop-filter:blur(10px);
+animation:fade 1s;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+h2{
+text-shadow:0 0 15px #ff3c6f;
+}
+
+.btn{
+display:block;
+margin:10px auto;
+padding:12px 20px;
+border:1px solid white;
+background:transparent;
+color:white;
+cursor:pointer;
+width:80%;
+transition:0.3s;
+}
+
+.btn:hover{
+background:white;
+color:black;
+transform:scale(1.05);
+}
+
+.level{
+position:absolute;
+top:20px;
+left:20px;
+color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="level" id="level">Level 1</div>
+
+<div class="box" id="game">
+
+<h2 id="title">You wake up inside a quiet memory...</h2>
+
+<p id="story">
+A file is open in front of you. It says: "Feelings not processed correctly."
+You have two choices.
+</p>
+
+<button class="btn" onclick="choice(1)">Open the file</button>
+<button class="btn" onclick="choice(2)">Ignore it</button>
+
+</div>
+
+<script>
+
+let level = 1;
+
+function choice(n){
+
+/* LEVEL 1 */
+if(level === 1){
+
+if(n === 1){
+level = 2;
+update(
+"Inside the file, you see fragments of conversations...",
+"Follow the voices",
+"Close the file"
+);
+}
+else{
+end("You walked away... but the feeling followed you.");
+}
+
+}
+
+/* LEVEL 2 */
+else if(level === 2){
+
+if(n === 1){
+level = 3;
+update(
+"You follow the voices and find a glowing heart locked in glass.",
+"Touch the heart",
+"Break the glass"
+);
+}
+else{
+end("You tried to escape... but memories repeated again.");
+}
+
+}
+
+/* LEVEL 3 */
+else if(level === 3){
+
+if(n === 1){
+goodEnd();
+}
+else{
+badEnd();
+}
+
+}
+
+}
+
+/* UPDATE STORY */
+function update(t,b1,b2){
+document.getElementById("title").innerText = t;
+document.getElementById("game").innerHTML = `
+<h2>${t}</h2>
+<button class="btn" onclick="choice(1)">${b1}</button>
+<button class="btn" onclick="choice(2)">${b2}</button>
+`;
+document.getElementById("level").innerText = "Level " + level;
+}
+
+/* ENDINGS */
+function end(msg){
+document.getElementById("game").innerHTML = `
+<h2>💔 Bad Ending</h2>
+<p>${msg}</p>
+<button class="btn" onclick="location.reload()">Try Again</button>
+`;
+}
+
+function badEnd(){
+document.getElementById("game").innerHTML = `
+<h2>💔 Broken Ending</h2>
+<p>You touched what you shouldn’t... and the feeling shattered.</p>
+<button class="btn" onclick="location.reload()">Restart</button>
+`;
+}
+
+function goodEnd(){
+document.getElementById("game").innerHTML = `
+<h2>💖 True Ending Unlocked</h2>
+<p>The heart responds... “You were always the missing piece.”</p>
+
+<button class="btn" onclick="location.href='end.html'">
+Go to Final Scene
+</button>
+`;
+}
+
+</script>
+
+</body>
+</html>
