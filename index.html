@@ -2,256 +2,200 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Something for You</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happiness Machine 🤍</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-
 body{
-  margin:0;
-  font-family:Poppins;
-  background:black;
-  color:white;
-  overflow:hidden;
+margin:0;
+font-family:Arial;
+background:black;
+color:white;
+overflow:hidden;
 }
 
-/* BACKGROUND PARTICLES */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
+/* Screens */
+.screen{
+display:none;
+height:100vh;
+width:100%;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+padding:20px;
 }
 
-/* MAIN LAYER */
-.content{
-  position:relative;
-  z-index:2;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
+.active{
+display:flex;
 }
 
-/* GLITCH TITLE */
-.glitch {
-  font-size:3rem;
-  font-weight:700;
-  position:relative;
-  animation: glow 2s infinite alternate;
+/* Button */
+button{
+padding:14px 25px;
+border:none;
+border-radius:25px;
+background:#ff4da6;
+color:white;
+font-size:16px;
+margin-top:20px;
+cursor:pointer;
+box-shadow:0 0 20px #ff4da6;
 }
 
-.glitch::before,
-.glitch::after{
-  content:"For You...";
-  position:absolute;
-  left:0;
+/* Gift */
+.gift{
+font-size:90px;
+animation:bounce 1.2s infinite;
+cursor:pointer;
 }
 
-.glitch::before{
-  color:#ff3c6f;
-  animation: glitch1 1s infinite;
+@keyframes bounce{
+50%{transform:translateY(-15px);}
 }
 
-.glitch::after{
-  color:#00fff2;
-  animation: glitch2 1s infinite;
+/* Photos */
+img{
+width:80%;
+max-width:320px;
+border-radius:15px;
+margin-top:15px;
+box-shadow:0 0 25px #ff4da6;
 }
 
-@keyframes glitch1{
-  0%{transform:translate(0)}
-  20%{transform:translate(-2px,2px)}
-  40%{transform:translate(-4px,-2px)}
-  60%{transform:translate(2px,2px)}
-  80%{transform:translate(-2px,-1px)}
-  100%{transform:translate(0)}
+/* Hearts */
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:20px;
+animation:float 6s linear infinite;
 }
 
-@keyframes glitch2{
-  0%{transform:translate(0)}
-  20%{transform:translate(2px,-2px)}
-  40%{transform:translate(4px,2px)}
-  60%{transform:translate(-2px,-2px)}
-  80%{transform:translate(2px,1px)}
-  100%{transform:translate(0)}
+@keyframes float{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-110vh);opacity:0;}
 }
 
-@keyframes glow{
-  from{text-shadow:0 0 10px #ff3c6f;}
-  to{text-shadow:0 0 25px #00fff2;}
+/* Glow text */
+.glow{
+text-shadow:0 0 10px #ff4da6;
 }
 
-/* BUTTONS */
-.btn{
-  margin-top:20px;
-  padding:12px 25px;
-  border:1px solid white;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.btn:hover{
-  background:white;
-  color:black;
-}
-
-/* LETTER BOX */
-.letter{
-  position:fixed;
-  bottom:-100%;
-  left:50%;
-  transform:translateX(-50%);
-  width:80%;
-  max-width:600px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:15px;
-  transition:1s;
-  z-index:5;
-}
-
-.letter.show{
-  bottom:10%;
-}
-
-/* MUSIC BUTTON */
-.music{
-  position:fixed;
-  top:20px;
-  right:20px;
-  padding:10px 15px;
-  border:1px solid white;
-  cursor:pointer;
-  z-index:10;
-}
-
-/* POPUP NOTE */
-.popup{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:white;
-  color:black;
-  padding:20px;
-  border-radius:10px;
-  display:none;
-  z-index:20;
-}
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
-
-<div class="music" onclick="toggleMusic()">🎵 Music</div>
-
-<div class="content">
-  <div class="glitch">For You...</div>
-  <p>A story that was never planned, but deeply felt.</p>
-  <button class="btn" onclick="openLetter()">Open Letter 💌</button>
-  <button class="btn" onclick="showPopup()">A Secret</button>
+<!-- SCREEN 1 -->
+<div class="screen active" id="s1">
+<h1 class="glow">Hey Abhi...</h1>
+<p>Something interesting is waiting for you 🤍</p>
+<button onclick="next(2)">Start</button>
 </div>
 
-<!-- LETTER -->
-<div class="letter" id="letter">
-  <h2>💌 Dear You,</h2>
-  <p>
-    I don’t know how to explain this feeling properly...
-    but you became the quiet part of my thoughts.
-    Not loud. Not forced. Just there — always.
-    And somehow, that means everything.
-  </p>
-  <button class="btn" onclick="closeLetter()">Close</button>
+<!-- SCREEN 2 -->
+<div class="screen" id="s2">
+<h1>🎁 Tap the Gift</h1>
+<div class="gift" onclick="next(3)">🎁</div>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <p>You are my favorite “what if” 💫</p>
-  <button onclick="closePopup()">close</button>
+<!-- SCREEN 3 -->
+<div class="screen" id="s3">
+<h1>🤖 AI SCAN</h1>
+<p>Humour: 97%</p>
+<p>Kindness: 100%</p>
+<p>Patience: 92%</p>
+<p><b>Smile Level: ERROR ⚠️ TOO HIGH</b></p>
+<button onclick="next(4)">Continue</button>
 </div>
 
-<audio id="song" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
+<!-- SCREEN 4 -->
+<div class="screen" id="s4">
+<h1>Question 😏</h1>
+<p>Are you awesome?</p>
+<button onclick="next(5)">YES</button>
+<button onclick="next(5)">ABSOLUTELY YES</button>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen" id="s5">
+<h1>📁 SECRET FILE</h1>
+<p>Subject: Abhi</p>
+<p>Status: Rare Human</p>
+<p>Makes people smile without trying</p>
+<button onclick="next(6)">Open Memory Vault</button>
+</div>
+
+<!-- SCREEN 6 PHOTO 1 -->
+<div class="screen" id="s6">
+<h1>📸 Memory 1</h1>
+<img src="quality_restoration_20251015203451640.jpg">
+<p>One of my favorite moments 🤍</p>
+<button onclick="next(7)">Next</button>
+</div>
+
+<!-- SCREEN 7 PHOTO 2 -->
+<div class="screen" id="s7">
+<h1>📸 Memory 2</h1>
+<img src="Snapchat-1248810170.jpg">
+<p>A memory worth keeping ✨</p>
+<button onclick="next(8)">Final Message</button>
+</div>
+
+<!-- SCREEN 8 FINAL -->
+<div class="screen" id="s8">
+<h1>💌 Final Message</h1>
+
+<p>
+Congratulations.
+</p>
+
+<p>
+This wasn't made for a special day.
+</p>
+
+<p>
+It was made because you deserve a reminder.
+</p>
+
+<p>
+You're appreciated.
+You're important.
+You're valued.
+</p>
+
+<h2 class="glow">— Devu 🤍</h2>
+
+<a href="https://www.youtube.com/results?search_query=baby+now+that+ive+found+you" target="_blank">
+<button>🎵 Our Song</button>
+</a>
+
+<p style="margin-top:20px;opacity:0.8;">
+I'm really glad I met you 🤍
+</p>
+
+</div>
 
 <script>
-/* LETTER CONTROLS */
-function openLetter(){
-  document.getElementById("letter").classList.add("show");
-}
-function closeLetter(){
-  document.getElementById("letter").classList.remove("show");
-}
 
-/* POPUP */
-function showPopup(){
-  document.getElementById("popup").style.display="block";
-}
-function closePopup(){
-  document.getElementById("popup").style.display="none";
+function next(n){
+document.querySelectorAll(".screen").forEach(s=>{
+s.classList.remove("active");
+});
+document.getElementById("s"+n).classList.add("active");
 }
 
-/* MUSIC */
-let playing=false;
-function toggleMusic(){
-  let song=document.getElementById("song");
-  if(!playing){
-    song.play();
-    playing=true;
-  }else{
-    song.pause();
-    playing=false;
-  }
-}
+/* floating hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
 
-/* PARTICLE BACKGROUND */
-const canvas=document.getElementById("bg");
-const ctx=canvas.getContext("2d");
+setTimeout(()=>h.remove(),6000);
+},300);
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<80;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2,
-    d:Math.random()*1
-  });
-}
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
-
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  }
-  move();
-}
-
-function move(){
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    p.y-=p.d;
-    if(p.y<0){
-      p.y=canvas.height;
-    }
-  }
-}
-
-setInterval(draw,20);
 </script>
 
 </body>
