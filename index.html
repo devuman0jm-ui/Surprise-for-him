@@ -2,174 +2,257 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You ❤️</title>
+<title>Something for You</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
 body{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  background: radial-gradient(circle at top, #1a1a2e, #000);
+  font-family:Poppins;
+  background:black;
   color:white;
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
-/* CINEMATIC HEADER */
-.hero{
+/* BACKGROUND PARTICLES */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+}
+
+/* MAIN LAYER */
+.content{
+  position:relative;
+  z-index:2;
   height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3), #000);
 }
 
-.hero h1{
+/* GLITCH TITLE */
+.glitch {
   font-size:3rem;
-  text-shadow:0 0 20px #ff4d6d;
-  animation:fadeIn 2s ease-in-out;
+  font-weight:700;
+  position:relative;
+  animation: glow 2s infinite alternate;
 }
 
-.hero p{
-  max-width:600px;
-  opacity:0.8;
-}
-
-/* FLOATING STICKERS */
-.sticker{
+.glitch::before,
+.glitch::after{
+  content:"For You...";
   position:absolute;
-  font-size:2rem;
-  animation: float 6s infinite ease-in-out;
-  opacity:0.7;
+  left:0;
 }
 
-@keyframes float{
-  0%{transform:translateY(0) rotate(0deg);}
-  50%{transform:translateY(-30px) rotate(20deg);}
-  100%{transform:translateY(0) rotate(0deg);}
+.glitch::before{
+  color:#ff3c6f;
+  animation: glitch1 1s infinite;
 }
 
-/* TYPEWRITER EFFECT */
-.typewriter{
-  font-size:1.5rem;
-  border-right:2px solid white;
-  white-space:nowrap;
-  overflow:hidden;
-  width:0;
-  animation: typing 6s steps(60,end) forwards, blink 0.8s infinite;
+.glitch::after{
+  color:#00fff2;
+  animation: glitch2 1s infinite;
 }
 
-@keyframes typing{
-  from{width:0}
-  to{width:100%}
+@keyframes glitch1{
+  0%{transform:translate(0)}
+  20%{transform:translate(-2px,2px)}
+  40%{transform:translate(-4px,-2px)}
+  60%{transform:translate(2px,2px)}
+  80%{transform:translate(-2px,-1px)}
+  100%{transform:translate(0)}
 }
 
-@keyframes blink{
-  50%{border-color:transparent}
+@keyframes glitch2{
+  0%{transform:translate(0)}
+  20%{transform:translate(2px,-2px)}
+  40%{transform:translate(4px,2px)}
+  60%{transform:translate(-2px,-2px)}
+  80%{transform:translate(2px,1px)}
+  100%{transform:translate(0)}
 }
 
-/* SECTIONS */
-.section{
-  padding:80px 20px;
-  max-width:900px;
-  margin:auto;
-  opacity:0;
-  transform:translateY(50px);
-  animation: slideUp 1.5s forwards;
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff3c6f;}
+  to{text-shadow:0 0 25px #00fff2;}
 }
 
-@keyframes slideUp{
-  to{opacity:1; transform:translateY(0);}
-}
-
-/* CARD STYLE */
-.card{
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius:15px;
-  margin:20px 0;
-  box-shadow:0 0 20px rgba(255,77,109,0.2);
+/* BUTTONS */
+.btn{
+  margin-top:20px;
+  padding:12px 25px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
   transition:0.3s;
 }
 
-.card:hover{
-  transform:scale(1.03);
+.btn:hover{
+  background:white;
+  color:black;
 }
 
-/* HEART BEAT */
-.heart{
-  color:#ff4d6d;
-  animation:beat 1s infinite;
+/* LETTER BOX */
+.letter{
+  position:fixed;
+  bottom:-100%;
+  left:50%;
+  transform:translateX(-50%);
+  width:80%;
+  max-width:600px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:15px;
+  transition:1s;
+  z-index:5;
 }
 
-@keyframes beat{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.3);}
+.letter.show{
+  bottom:10%;
+}
+
+/* MUSIC BUTTON */
+.music{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:10px 15px;
+  border:1px solid white;
+  cursor:pointer;
+  z-index:10;
+}
+
+/* POPUP NOTE */
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:10px;
+  display:none;
+  z-index:20;
 }
 </style>
 </head>
 
 <body>
 
-<!-- FLOATING STICKERS -->
-<div class="sticker" style="top:10%; left:10%;">💖</div>
-<div class="sticker" style="top:20%; left:80%;">✨</div>
-<div class="sticker" style="top:70%; left:15%;">💌</div>
-<div class="sticker" style="top:60%; left:85%;">🌙</div>
+<canvas id="bg"></canvas>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>For Someone Special</h1>
-  <p>A small cinematic space made just for you...</p>
+<div class="music" onclick="toggleMusic()">🎵 Music</div>
+
+<div class="content">
+  <div class="glitch">For You...</div>
+  <p>A story that was never planned, but deeply felt.</p>
+  <button class="btn" onclick="openLetter()">Open Letter 💌</button>
+  <button class="btn" onclick="showPopup()">A Secret</button>
 </div>
 
-<!-- TYPEWRITER LETTER -->
-<div class="section">
-  <div class="typewriter">
-    I never planned to feel this way... but somehow, you became my favorite story.
-  </div>
+<!-- LETTER -->
+<div class="letter" id="letter">
+  <h2>💌 Dear You,</h2>
+  <p>
+    I don’t know how to explain this feeling properly...
+    but you became the quiet part of my thoughts.
+    Not loud. Not forced. Just there — always.
+    And somehow, that means everything.
+  </p>
+  <button class="btn" onclick="closeLetter()">Close</button>
 </div>
 
-<!-- STORY SECTION -->
-<div class="section">
-  <div class="card">
-    <h2>Chapter 1: The Beginning</h2>
-    <p>
-      It all started like a normal moment... but some moments quietly change everything.
-      You didn’t even notice, but you became the reason for my smiles.
-    </p>
-  </div>
-
-  <div class="card">
-    <h2>Chapter 2: The Feeling</h2>
-    <p>
-      It’s strange how someone can feel like home without even trying.
-      Every message, every glance, every silence… it all meant something.
-    </p>
-  </div>
-
-  <div class="card">
-    <h2>Chapter 3: The Truth</h2>
-    <p>
-      I don’t know what the future holds, but I know this moment mattered.
-      And maybe that’s enough.
-    </p>
-  </div>
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <p>You are my favorite “what if” 💫</p>
+  <button onclick="closePopup()">close</button>
 </div>
 
-<!-- EMOTIONAL LETTER -->
-<div class="section">
-  <div class="card">
-    <h2>💌 A Letter</h2>
-    <p>
-      If I could wrap my feelings into words, it would still not be enough.
-      But if you ever read this, just know — you were important in a way I can’t explain.
-      <span class="heart">❤️</span>
-    </p>
-  </div>
-</div>
+<audio id="song" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<script>
+/* LETTER CONTROLS */
+function openLetter(){
+  document.getElementById("letter").classList.add("show");
+}
+function closeLetter(){
+  document.getElementById("letter").classList.remove("show");
+}
+
+/* POPUP */
+function showPopup(){
+  document.getElementById("popup").style.display="block";
+}
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+/* MUSIC */
+let playing=false;
+function toggleMusic(){
+  let song=document.getElementById("song");
+  if(!playing){
+    song.play();
+    playing=true;
+  }else{
+    song.pause();
+    playing=false;
+  }
+}
+
+/* PARTICLE BACKGROUND */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    d:Math.random()*1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  move();
+}
+
+function move(){
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    p.y-=p.d;
+    if(p.y<0){
+      p.y=canvas.height;
+    }
+  }
+}
+
+setInterval(draw,20);
+</script>
 
 </body>
 </html>
