@@ -2,126 +2,256 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Cinematic Intro</title>
+<title>Something for You</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
 body{
-margin:0;
-height:100vh;
-background:black;
-overflow:hidden;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:Poppins;
+  margin:0;
+  font-family:Poppins;
+  background:black;
+  color:white;
+  overflow:hidden;
 }
 
-/* BACKGROUND DARK GLOW */
-.bg{
-position:absolute;
-width:100%;
-height:100%;
-background:radial-gradient(circle at center, #1a0000, #000);
-opacity:0;
-animation:bgFade 3s forwards;
+/* BACKGROUND PARTICLES */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
 }
 
-@keyframes bgFade{
-to{opacity:1;}
+/* MAIN LAYER */
+.content{
+  position:relative;
+  z-index:2;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-/* MAIN LOGO TEXT */
-.logo{
-font-size:4rem;
-font-weight:bold;
-color:#ff2a2a;
-letter-spacing:3px;
-opacity:0;
-transform:scale(0.6);
-animation:intro 3s ease forwards;
-text-shadow:0 0 30px #ff0000;
-z-index:2;
+/* GLITCH TITLE */
+.glitch {
+  font-size:3rem;
+  font-weight:700;
+  position:relative;
+  animation: glow 2s infinite alternate;
 }
 
-@keyframes intro{
-0%{opacity:0; transform:scale(0.6);}
-40%{opacity:1; transform:scale(1.1);}
-70%{transform:scale(1);}
-100%{opacity:1;}
+.glitch::before,
+.glitch::after{
+  content:"For You...";
+  position:absolute;
+  left:0;
 }
 
-/* SUB TEXT */
-.sub{
-position:absolute;
-bottom:80px;
-color:white;
-opacity:0;
-font-size:1rem;
-letter-spacing:2px;
-animation:fadeIn 2s 2s forwards;
+.glitch::before{
+  color:#ff3c6f;
+  animation: glitch1 1s infinite;
 }
 
-@keyframes fadeIn{
-to{opacity:0.7;}
+.glitch::after{
+  color:#00fff2;
+  animation: glitch2 1s infinite;
 }
 
-/* SKIP BUTTON */
-.skip{
-position:absolute;
-top:20px;
-right:20px;
-padding:8px 15px;
-border:1px solid white;
-background:transparent;
-color:white;
-cursor:pointer;
-opacity:0.7;
+@keyframes glitch1{
+  0%{transform:translate(0)}
+  20%{transform:translate(-2px,2px)}
+  40%{transform:translate(-4px,-2px)}
+  60%{transform:translate(2px,2px)}
+  80%{transform:translate(-2px,-1px)}
+  100%{transform:translate(0)}
 }
 
-.skip:hover{
-background:white;
-color:black;
+@keyframes glitch2{
+  0%{transform:translate(0)}
+  20%{transform:translate(2px,-2px)}
+  40%{transform:translate(4px,2px)}
+  60%{transform:translate(-2px,-2px)}
+  80%{transform:translate(2px,1px)}
+  100%{transform:translate(0)}
 }
 
-/* FADE OUT TRANSITION */
-.fadeOut{
-animation:out 1.5s forwards;
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff3c6f;}
+  to{text-shadow:0 0 25px #00fff2;}
 }
 
-@keyframes out{
-to{opacity:0; transform:scale(1.2);}
+/* BUTTONS */
+.btn{
+  margin-top:20px;
+  padding:12px 25px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn:hover{
+  background:white;
+  color:black;
+}
+
+/* LETTER BOX */
+.letter{
+  position:fixed;
+  bottom:-100%;
+  left:50%;
+  transform:translateX(-50%);
+  width:80%;
+  max-width:600px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:15px;
+  transition:1s;
+  z-index:5;
+}
+
+.letter.show{
+  bottom:10%;
+}
+
+/* MUSIC BUTTON */
+.music{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:10px 15px;
+  border:1px solid white;
+  cursor:pointer;
+  z-index:10;
+}
+
+/* POPUP NOTE */
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:10px;
+  display:none;
+  z-index:20;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<canvas id="bg"></canvas>
 
-<button class="skip" onclick="skipIntro()">Skip</button>
+<div class="music" onclick="toggleMusic()">🎵 Music</div>
 
-<div class="logo" id="logo">A STORY FOR YOU</div>
+<div class="content">
+  <div class="glitch">For You...</div>
+  <p>A story that was never planned, but deeply felt.</p>
+  <button class="btn" onclick="openLetter()">Open Letter 💌</button>
+  <button class="btn" onclick="showPopup()">A Secret</button>
+</div>
 
-<div class="sub">A cinematic emotional experience is starting...</div>
+<!-- LETTER -->
+<div class="letter" id="letter">
+  <h2>💌 Dear You,</h2>
+  <p>
+    I don’t know how to explain this feeling properly...
+    but you became the quiet part of my thoughts.
+    Not loud. Not forced. Just there — always.
+    And somehow, that means everything.
+  </p>
+  <button class="btn" onclick="closeLetter()">Close</button>
+</div>
 
-<!-- OPTIONAL MUSIC -->
-<audio id="sound" autoplay>
-  <source src="https://www.soundjay.com/misc/sounds/cinematic-boom-1.mp3">
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <p>You are my favorite “what if” 💫</p>
+  <button onclick="closePopup()">close</button>
+</div>
+
+<audio id="song" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
 <script>
-setTimeout(() => {
-  document.body.classList.add("fadeOut");
-
-  setTimeout(() => {
-    window.location.href = "letter.html";
-  }, 1200);
-
-}, 4500);
-
-function skipIntro(){
-  window.location.href = "letter.html";
+/* LETTER CONTROLS */
+function openLetter(){
+  document.getElementById("letter").classList.add("show");
 }
+function closeLetter(){
+  document.getElementById("letter").classList.remove("show");
+}
+
+/* POPUP */
+function showPopup(){
+  document.getElementById("popup").style.display="block";
+}
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+/* MUSIC */
+let playing=false;
+function toggleMusic(){
+  let song=document.getElementById("song");
+  if(!playing){
+    song.play();
+    playing=true;
+  }else{
+    song.pause();
+    playing=false;
+  }
+}
+
+/* PARTICLE BACKGROUND */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    d:Math.random()*1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  move();
+}
+
+function move(){
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    p.y-=p.d;
+    if(p.y<0){
+      p.y=canvas.height;
+    }
+  }
+}
+
+setInterval(draw,20);
 </script>
 
 </body>
