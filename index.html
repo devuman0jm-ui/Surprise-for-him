@@ -1,52 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>For My Love ❤️</title>
+<title>Devu ❤️ Abhi</title>
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+overflow:hidden;
 text-align:center;
-overflow-x:hidden;
 color:white;
+height:100vh;
 }
 
 .container{
-padding:50px 20px;
+padding-top:100px;
 }
 
 h1{
-font-size:3em;
+font-size:3rem;
+margin-bottom:20px;
+animation:fadeIn 2s;
+}
+
+p{
+font-size:1.2rem;
+margin:15px;
 }
 
 button{
-padding:15px 30px;
+padding:15px 35px;
 font-size:18px;
 border:none;
 border-radius:30px;
 background:white;
-color:#ff4d88;
+color:#ff4f87;
 cursor:pointer;
+font-weight:bold;
+margin-top:20px;
 }
 
-#message{
+#surprise{
 display:none;
-margin-top:30px;
-font-size:22px;
+padding:20px;
+animation:fadeIn 2s;
 }
 
 .heart{
 position:fixed;
 bottom:-20px;
-font-size:20px;
-animation:float 5s linear infinite;
+font-size:25px;
+animation:float 6s linear infinite;
 }
 
 @keyframes float{
-0%{transform:translateY(0);}
-100%{transform:translateY(-100vh);}
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh);
+opacity:0;
+}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
 }
 </style>
 </head>
@@ -54,40 +80,66 @@ animation:float 5s linear infinite;
 <body>
 
 <div class="container">
-<h1>❤️ For My Love ❤️</h1>
 
-<p>A little surprise made just for you.</p>
+<h1>❤️ Devu & Abhi ❤️</h1>
 
-<button onclick="showLove()">Open Surprise 🎁</button>
+<p>December 10 ✨ Our Special Day ✨</p>
 
-<div id="message">
-<h2>You make my world brighter ✨</h2>
+<p>A little surprise made with love...</p>
+
+<button onclick="showSurprise()">Open My Heart 🎁</button>
+
+<div id="surprise">
+
+<h2>💌 Dear Abhi,</h2>
+
 <p>
-Thank you for all the laughs, memories and happiness.
-You are one of the most special people in my life ❤️
+Thank you for always making me smile.
 </p>
+
+<p>
+Every memory with you is special.
+You make ordinary days brighter,
+and I am grateful for every laugh,
+every conversation and every moment we share.
+</p>
+
+<p>
+No matter what happens,
+you will always have a special place in my heart. ❤️
+</p>
+
+<h3>Forever Yours,</h3>
+<h2>Devu ❤️</h2>
+
 </div>
 
 </div>
 
 <script>
 
-function showLove(){
-document.getElementById("message").style.display="block";
+function showSurprise(){
+document.getElementById("surprise").style.display="block";
 }
 
-setInterval(()=>{
+setInterval(function(){
+
 let heart=document.createElement("div");
+
 heart.className="heart";
 heart.innerHTML="❤️";
+
 heart.style.left=Math.random()*100+"vw";
+
+heart.style.fontSize=(20+Math.random()*25)+"px";
+
 document.body.appendChild(heart);
 
 setTimeout(()=>{
 heart.remove();
-},5000);
+},6000);
 
-},300);
+},250);
 
 </script>
 
