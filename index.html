@@ -2,145 +2,81 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Something for You</title>
+<title>The Story World</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-
 body{
-  margin:0;
-  font-family:Poppins;
-  background:black;
-  color:white;
-  overflow:hidden;
+margin:0;
+font-family:Poppins, sans-serif;
+background:black;
+color:white;
+overflow:hidden;
 }
 
-/* BACKGROUND PARTICLES */
+/* BACKGROUND */
 canvas{
-  position:fixed;
-  top:0;
-  left:0;
+position:fixed;
+top:0;
+left:0;
+z-index:0;
 }
 
-/* MAIN LAYER */
-.content{
-  position:relative;
-  z-index:2;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
+/* ALL SCREENS */
+.screen{
+display:none;
+height:100vh;
+width:100%;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+position:absolute;
+z-index:2;
 }
 
-/* GLITCH TITLE */
-.glitch {
-  font-size:3rem;
-  font-weight:700;
-  position:relative;
-  animation: glow 2s infinite alternate;
-}
-
-.glitch::before,
-.glitch::after{
-  content:"For You...";
-  position:absolute;
-  left:0;
-}
-
-.glitch::before{
-  color:#ff3c6f;
-  animation: glitch1 1s infinite;
-}
-
-.glitch::after{
-  color:#00fff2;
-  animation: glitch2 1s infinite;
-}
-
-@keyframes glitch1{
-  0%{transform:translate(0)}
-  20%{transform:translate(-2px,2px)}
-  40%{transform:translate(-4px,-2px)}
-  60%{transform:translate(2px,2px)}
-  80%{transform:translate(-2px,-1px)}
-  100%{transform:translate(0)}
-}
-
-@keyframes glitch2{
-  0%{transform:translate(0)}
-  20%{transform:translate(2px,-2px)}
-  40%{transform:translate(4px,2px)}
-  60%{transform:translate(-2px,-2px)}
-  80%{transform:translate(2px,1px)}
-  100%{transform:translate(0)}
-}
-
-@keyframes glow{
-  from{text-shadow:0 0 10px #ff3c6f;}
-  to{text-shadow:0 0 25px #00fff2;}
+.active{
+display:flex;
 }
 
 /* BUTTONS */
-.btn{
-  margin-top:20px;
-  padding:12px 25px;
-  border:1px solid white;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
+button{
+margin:10px;
+padding:12px 20px;
+border:1px solid white;
+background:transparent;
+color:white;
+cursor:pointer;
+transition:0.3s;
 }
 
-.btn:hover{
-  background:white;
-  color:black;
+button:hover{
+background:white;
+color:black;
 }
 
-/* LETTER BOX */
-.letter{
-  position:fixed;
-  bottom:-100%;
-  left:50%;
-  transform:translateX(-50%);
-  width:80%;
-  max-width:600px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:15px;
-  transition:1s;
-  z-index:5;
+/* TITLE EFFECT */
+h1{
+text-shadow:0 0 20px #ff3c6f;
 }
 
-.letter.show{
-  bottom:10%;
+/* INTRO ANIMATION */
+.intro{
+font-size:2.5rem;
+animation:fadeIn 3s forwards;
+opacity:0;
 }
 
-/* MUSIC BUTTON */
-.music{
-  position:fixed;
-  top:20px;
-  right:20px;
-  padding:10px 15px;
-  border:1px solid white;
-  cursor:pointer;
-  z-index:10;
+@keyframes fadeIn{
+to{opacity:1}
 }
 
-/* POPUP NOTE */
-.popup{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:white;
-  color:black;
-  padding:20px;
-  border-radius:10px;
-  display:none;
-  z-index:20;
+/* BOX */
+.box{
+max-width:600px;
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:15px;
+backdrop-filter:blur(10px);
 }
 </style>
 </head>
@@ -149,68 +85,154 @@ canvas{
 
 <canvas id="bg"></canvas>
 
-<div class="music" onclick="toggleMusic()">🎵 Music</div>
+<!-- INTRO -->
+<div class="screen active" id="intro">
+  <div class="intro">🎬 A STORY IS ABOUT TO BEGIN...</div>
+  <button onclick="go('hub')">Skip</button>
+</div>
 
-<div class="content">
-  <div class="glitch">For You...</div>
-  <p>A story that was never planned, but deeply felt.</p>
-  <button class="btn" onclick="openLetter()">Open Letter 💌</button>
-  <button class="btn" onclick="showPopup()">A Secret</button>
+<!-- HUB -->
+<div class="screen" id="hub">
+  <h1>🌌 Story World</h1>
+  <p id="memoryText"></p>
+  <button onclick="go('letter')">💌 Letter</button>
+  <button onclick="go('game')">🎮 Adventure</button>
+  <button onclick="go('secret')">🔒 Secret</button>
 </div>
 
 <!-- LETTER -->
-<div class="letter" id="letter">
-  <h2>💌 Dear You,</h2>
-  <p>
-    I don’t know how to explain this feeling properly...
-    but you became the quiet part of my thoughts.
-    Not loud. Not forced. Just there — always.
-    And somehow, that means everything.
-  </p>
-  <button class="btn" onclick="closeLetter()">Close</button>
+<div class="screen" id="letter">
+  <div class="box">
+    <h2>💌 Letter</h2>
+    <p>
+      You came back again…  
+      that means something is still inside the memory.
+    </p>
+    <button onclick="go('hub')">Back</button>
+  </div>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <p>You are my favorite “what if” 💫</p>
-  <button onclick="closePopup()">close</button>
+<!-- GAME -->
+<div class="screen" id="game">
+  <div class="box" id="gameBox">
+    <h2>You wake inside a memory system...</h2>
+    <p>Choose your path.</p>
+
+    <button onclick="choice(1)">Open file</button>
+    <button onclick="choice(2)">Leave</button>
+  </div>
 </div>
 
-<audio id="song" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
+<!-- SECRET -->
+<div class="screen" id="secret">
+  <div class="box">
+    <h2>🔒 Secret Vault</h2>
+    <p id="secretMsg">Checking memory...</p>
+    <button onclick="go('hub')">Back</button>
+  </div>
+</div>
+
+<!-- END -->
+<div class="screen" id="end">
+  <h1>🎬 THE END</h1>
+  <p>But memories never end...</p>
+  <button onclick="go('hub')">Restart</button>
+</div>
 
 <script>
-/* LETTER CONTROLS */
-function openLetter(){
-  document.getElementById("letter").classList.add("show");
-}
-function closeLetter(){
-  document.getElementById("letter").classList.remove("show");
+
+/* NAVIGATION */
+function go(id){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+
+if(id==='hub') updateMemory();
+if(id==='secret') loadSecret();
 }
 
-/* POPUP */
-function showPopup(){
-  document.getElementById("popup").style.display="block";
-}
-function closePopup(){
-  document.getElementById("popup").style.display="none";
+/* MEMORY */
+function save(data){
+localStorage.setItem("story_state", data);
 }
 
-/* MUSIC */
-let playing=false;
-function toggleMusic(){
-  let song=document.getElementById("song");
-  if(!playing){
-    song.play();
-    playing=true;
-  }else{
-    song.pause();
-    playing=false;
-  }
+function updateMemory(){
+let m = localStorage.getItem("story_state");
+document.getElementById("memoryText").innerText =
+m ? "Memory: " + m : "No memory found.";
 }
 
-/* PARTICLE BACKGROUND */
+/* GAME */
+let level = 1;
+
+function choice(n){
+
+if(level===1){
+
+if(n===1){
+save("file_opened");
+level=2;
+
+document.getElementById("gameBox").innerHTML = `
+<h2>A voice appears...</h2>
+<button onclick="choice(1)">Follow voice</button>
+<button onclick="choice(2)">Ignore</button>
+`;
+}
+else{
+save("left");
+go('end');
+}
+}
+
+else if(level===2){
+
+if(n===1){
+save("followed");
+goodEnd();
+}
+else{
+badEnd();
+}
+
+}
+
+}
+
+function goodEnd(){
+document.getElementById("gameBox").innerHTML = `
+<h2>💖 TRUE ENDING</h2>
+<p>You were always part of this memory system.</p>
+<button onclick="go('end')">Continue</button>
+`;
+}
+
+function badEnd(){
+document.getElementById("gameBox").innerHTML = `
+<h2>💔 BAD END</h2>
+<p>The connection broke.</p>
+<button onclick="location.reload()">Retry</button>
+`;
+}
+
+/* SECRET */
+function loadSecret(){
+let m = localStorage.getItem("story_state");
+
+if(m==="followed"){
+document.getElementById("secretMsg").innerText =
+"You unlocked the hidden path 💖";
+}
+else if(m==="file_opened"){
+document.getElementById("secretMsg").innerText =
+"You saw something you shouldn’t...";
+}
+else{
+document.getElementById("secretMsg").innerText =
+"Nothing unlocked yet.";
+}
+}
+
+/* PARTICLES */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
 
@@ -219,39 +241,34 @@ canvas.height=window.innerHeight;
 
 let particles=[];
 
-for(let i=0;i<80;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2,
-    d:Math.random()*1
-  });
+for(let i=0;i<60;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2
+});
 }
 
 function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
 
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  }
-  move();
+particles.forEach(p=>{
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fill();
+
+p.y -= 0.5;
+if(p.y<0) p.y=canvas.height;
+});
+
+requestAnimationFrame(draw);
 }
+draw();
 
-function move(){
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    p.y-=p.d;
-    if(p.y<0){
-      p.y=canvas.height;
-    }
-  }
-}
+/* START MEMORY */
+updateMemory();
 
-setInterval(draw,20);
 </script>
 
 </body>
